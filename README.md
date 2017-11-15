@@ -5,12 +5,15 @@ Architecture
 ------
 <img src="/Images/System_Architecture.png">
 
+Notes
+-----
+
+This emulator was developed for an altered version of Bpod in the Erlich Lab. It has not yet been tested with the official Bpod firmware.
+
 Install
 -------
-1. Get updated bpod code (MATLAB)  
-`git clone https://gitlab.erlichlab.org/erlichlab/bpod.git`
-2. `git clone https://gitlab.erlichlab.org/erlichlab/bpod-emulator.git`
-3. Run installing script  
+1. Clone this repository
+3. Run install script  
 `cd bpod-emulator; ./install_emulator_mac` (for Mac)  
 `cd bpod-emulator; ./install_emulator_linux` (for Debian/Ubuntu)
 
@@ -52,11 +55,21 @@ Or start it manually:
 
 Notes for updating the emaultor firmware when changes are made
 -------
+
+If you have installed bpod in a sister directory to this repository then:
+
+1. `cd FirmwareWrapper/`
+2. `./convert_firmware.sh`
+
+
+The `covert_firmware.sh` file will look for a specific firmware (used in the ErlichLab) and copy it and make the following changes:
 1. Add [headers][6]
 2. `setup()` takes an [extra input][7]
 3. Add [this line][8] to `setup()`
 4. `setup()` and `loop()` need to be moved to the end of the code
 5. Add [delay][9] to prevent emulator taking up all CPU time 
+
+If you are using this tool with Sanworks Bpod you will need to change one line of the script to point to the correct firmware.
 
 FAQ
 ---

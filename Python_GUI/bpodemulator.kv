@@ -1,0 +1,59 @@
+<ValveStateWidget>:
+    canvas:
+        Color:
+            rgba: 1.0, 0.1, 0.1, self.alpha_value
+        Ellipse:
+            pos:  self.pos[0]+210, self.pos[0]+50
+            size: self.led_size
+
+<PokeWidget>:
+    canvas:
+        Color:
+            rgba: 0.2, 0.2, 0.2, 1.0
+        Ellipse:
+            pos: self.pos[0]+13, self.pos[1]+4
+            # pos : self.pos
+            size: 90, 90
+
+<BinaryLedWidget>:
+    canvas:
+        Color:
+            rgba: 0.0, 0.8, 1.0, self.alpha_value
+        Ellipse:
+            pos:  self.led_pos[0]+3, self.led_pos[0]-1
+            size: self.led_size
+
+
+
+<PwmLedWidget>:
+    canvas:
+        Color: 
+            rgba: 1.0, 1.0, 0.0, self.alpha_value
+        Ellipse:
+            pos:  self.led_pos[0]+1, self.led_pos[0]-1
+            size: self.led_size
+        
+
+<RewardPokeWidget>:
+    canvas:
+        Color:
+            rgba: 0.2, 0.2, 0.2, 1.0
+        Ellipse:
+            pos: self.pos[0]+ 10, self.pos[1]
+            size: 100,100        
+
+<RewardLedWidget>:
+    canvas:
+        Color:
+            rgba: 1.0, 1.0, 1.0, self.alpha_value
+        Ellipse:
+            pos:  self.led_pos[0]-35, self.led_pos[1]-40
+            size: self.led_size                
+
+<PokeWall>:
+    canvas.before:
+        Color:
+            rgba: 0.8, 0.8, 0.8, 1.0
+        Rectangle:
+            pos: self.pos
+            size: self.size

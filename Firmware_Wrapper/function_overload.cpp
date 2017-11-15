@@ -102,17 +102,22 @@ const unsigned long SEC_TO_MILLSEC = 1000;
 const unsigned long MILLSEC_TO_MICROSEC = 1000;
 unsigned long millis()
 {
-    return clock() / CLOCKS_PER_SEC * SEC_TO_MILLSEC;
+    return ((float) clock()) / ((float) CLOCKS_PER_SEC) * SEC_TO_MILLSEC;
 }
 
 unsigned long micros()
 {
-    return millis() * MILLSEC_TO_MICROSEC;
+    return ((float) clock()) / ((float) CLOCKS_PER_SEC) * SEC_TO_MILLSEC * MILLSEC_TO_MICROSEC;
 }
 
 void delay(unsigned long millsec)
 {
     usleep(millsec * MILLSEC_TO_MICROSEC);
+}
+
+void udelay(unsigned long microsec)
+{
+    usleep(microsec);
 }
 
 

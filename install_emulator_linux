@@ -1,0 +1,36 @@
+#!/bin/bash
+# Quit if anything fails
+set -e
+
+#for best kernel only
+if [ `uname` != "Linux" ];
+then
+    echo "This script is for (Debian based) Linux only"
+    exit 1
+fi
+
+command -v apt >/dev/null 2>&1 || {
+    echo "You need to have apt installed. Which it should be, if you're running Debian based Linux." >&2;
+    echo "(Also I shouldn't have to mention this, but Ubuntu is Debian based)." >&2;
+    exit 1;
+}
+
+thisdir=`pwd`
+
+command -v socat >/dev/null 2>&1 || sudo apt-get install socat
+dpkg -s libzmq3-dev >/dev/null 2>&1 || sudo apt-get install libzmq3-dev
+dpkg -s libzmqpp-dev >/dev/null 2>&1 || sudo apt-get install libzmqpp-dev
+dpkg -s python-kivy >/dev/null 2>&1 || sudo apt-get install python-kivy
+command -v pip >/dev/null 2>&1 || sudo apt-get install python-pip
+
+sudo pip install cython
+sudo pip install pygame
+sudo pip install pyzmq
+
+cd $thisdir
+cd Firmware_Wrapper
+./convert_firmware.sh
+#    echo "g++ -std=c++11 -pthread -lzmq main.cpp -o bpod_em"
+g++ -std=c++11 -pthread main.cpp -o bpod_em -lzmq
+
+cd ..

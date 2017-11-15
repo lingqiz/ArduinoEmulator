@@ -11,10 +11,8 @@
 #include <windows.h>
 #endif
 
-const unsigned long REFRESH_SPEED_MS = 30;
 
 zmq::context_t context (1);
-
 // Message of format %2d:%3d (idx:data)
 const int outputMessageLength = 6;
 int outputPort = 8002;
@@ -23,6 +21,12 @@ int outputPort = 8002;
 const int inputMessageLength  = 5;
 int inputPort  = 8003;
 
+/*
+    ZMQ threads for sending information to the GUI side 
+    Loop through shared memory and send one array entry each time
+    Refresh rate of 30 MS 
+*/
+const unsigned long REFRESH_SPEED_MS = 30;
 void *sender_thread_exec(void *threadid)
 {
     zmq::socket_t  sender(context, ZMQ_PUSH);
@@ -30,12 +34,12 @@ void *sender_thread_exec(void *threadid)
     sender.bind("tcp://*:8002");  //outputPort
     zmq::message_t message(outputMessageLength);
 
-    while(true)
+    while (true)
     {
-        for(int pinIdx = 0; pinIdx < digitalPinsNumber; pinIdx++)
+        for (int pinIdx = 0; pinIdx < digitalPinsNumber; pinIdx++)
         {
             message.rebuild(outputMessageLength);
-            sprintf((char *) message.data(), "%2d:%3d", pinIdx, digitalPins[pinIdx]);       
+            sprintf((char *) message.data(), "%2d:%3d", pinIdx, digitalPins[pinIdx]);
             sender.send(message);
         }
         
@@ -49,7 +53,10 @@ void *sender_thread_exec(void *threadid)
     pthread_exit(NULL);
 }
     
-
+/*
+    Wait on ZMQ socket, whenever updated value of analog pin recevied, 
+    write it to shared memory.
+*/
 void *receiver_thread_exec(void* threadid)
 {
      

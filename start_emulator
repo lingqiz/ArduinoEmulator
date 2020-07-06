@@ -1,0 +1,29 @@
+#!/bin/bash
+
+
+if [ $# -eq 0 ];
+	then
+		linkn='em'
+		portn=9000
+		echo "Assigning defaults"
+	else
+		linkn=$1
+		portn=$2
+fi
+
+
+# echo "bpod_em exists, run socat"
+
+
+echo "socat -d -d pty,echo=0,raw,link=$linkn TCP-LISTEN:$portn,fork &"
+
+socat -d -d pty,echo=0,raw,link=$linkn TCP-LISTEN:$portn,fork &
+sleep 1
+socat_pid=$!
+echo "Start Emulator and GUI"
+./Firmware_Wrapper/bpod_em $linkn &
+bpod_pid=$!
+echo "Emulator already started! Type in start_bpod $2 in MATLAB"
+python ./Python_GUI/kivy_gui.py 
+kill $socat_pid
+kill $bpod_pid

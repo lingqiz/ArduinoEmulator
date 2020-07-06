@@ -1,0 +1,38 @@
+#!/bin/bash
+#for mac only
+if [ 'Darwin' != `uname` ];
+	then
+	echo "This script is for mac osx only"
+	exit 1
+fi
+
+command -v brew >/dev/null 2>&1 || { echo "brew must be installed prior to running. Visit https://brew.sh for instructions." >&2; exit 1; }
+
+thisdir=`pwd`
+
+
+command -v socat >/dev/null 2>&1 || brew install socat
+command -v curve_keygen >/dev/null 2>&1 ||brew install zmq
+
+if [ ! -f /usr/local/include/zmq.hpp ];
+then
+	cd /tmp
+	git clone https://github.com/zeromq/cppzmq.git
+	cd cppzmq
+	cp ./zmq.hpp /usr/local/include
+	cd ..
+	rm -rf cppzmq
+fi
+
+pip install cython
+pip install kivy
+pip install pygame
+pip install pyzmq
+
+cd $thisdir
+cd Firmware_Wrapper
+./convert_firmware.sh
+#    echo "g++ -std=c++11 -pthread -lzmq main.cpp -o bpod_em"
+g++ -std=c++11 -pthread -lzmq main.cpp -o bpod_em
+ 
+cd ..

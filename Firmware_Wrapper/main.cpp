@@ -3,10 +3,7 @@
 typedef unsigned char BYTE;
 #include <zmq.hpp>
 #include <iostream>
-
-#include "arduino_firmware.cpp"
-// You can change this line to point to your altered arduino firmware
-
+#include "Bpod_Firmware_with_NewPCB.cpp"
 #include "zmq_socket.cpp"
 
 #include <cstdlib>
